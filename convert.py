@@ -1,33 +1,31 @@
+import io
 import tabula
 import pandas as pd
 from glob import glob
 import re
 import os
-import helpers_new_model
+from io import BytesIO
+from helpers import df_ajust_first_page, df_ajust_pages, last_df_ajust
 from keyword_position import keyword_first_page, keyword_last_page
 from PyPDF2 import PdfFileReader, PdfFileWriter
 import PyPDF2
 import fitz
 
-file = 'MARDISA/EXTRATOS PDF/Extrato_Veiculos_2018.pdf'
+def convert (filename):
 
-def main (file):
-
-    xreader = PyPDF2.PdfFileReader(file)
+    xreader = PyPDF2.PdfFileReader(filename)
 
     df_final = pd.DataFrame()
 
     lastrow = False
 
-    for x in range(1, xreader.numPages + 1):
+    for x in range(160, xreader.numPages + 1):
         
         print(f'Lendo {x} de {xreader.numPages}')
         
         listadrop = []
         texto = xreader.pages[x-1].extractText()
-        doc = fitz.open(file)
-
-    #     area = 0
+        doc = fitz.open(filename)
         
         if(re.search('Folha 1\/', texto)):
             
@@ -43,14 +41,14 @@ def main (file):
             
             if(re.search('Total', texto) and re.search('Os dados acima têm como base', texto)):
 
-                area = keyword_first_page(file, x)
+                area = keyword_first_page(filename, x)
                 pass
             else:
                 area = (208.526,33.91,926.48,581.145)
 
-            df = tabula.read_pdf(file, stream=True, pages=str(x), area=area)
+            df = tabula.read_pdf(filename, stream=True, pages=str(x), area=area)
             
-            retorno = helpers_new_model.df_ajust_first_page(df[0], listadrop, empresa, ag, conta)
+            retorno = df_ajust_first_page(df[0], listadrop, empresa, ag, conta)
             df = retorno[0]
             lastrow = retorno[1]
                 
@@ -64,17 +62,16 @@ def main (file):
             
             if(re.search('Últimos Lançamentos', texto) or re.search('Total', texto)):
                     
-                area = keyword_last_page(file, x)
-                df = tabula.read_pdf(file, stream=True, pages=str(x), area=area)
+                area = keyword_last_page(filename, x)
+                df = tabula.read_pdf(filename, stream=True, pages=str(x), area=area)
                 
             else:
                 
-                df = tabula.read_pdf(file, stream=True, pages=str(x), area=(122.777,38.587,926.362,571.791))
+                df = tabula.read_pdf(filename, stream=True, pages=str(x), area=(122.777,38.587,926.362,571.791))
                 
             if(df == []):
                 continue
-    #         print(area)
-            retorno = helpers_new_model.df_ajust_pages(df[0], listadrop, lastrow)
+            retorno = df_ajust_pages(df[0], listadrop, lastrow)
             df = retorno[0]
             lastrow = retorno[1]
                 
@@ -83,7 +80,10 @@ def main (file):
     df_final.reset_index(inplace=True, drop=True)
 
     listadrop = []
+    df_final = last_df_ajust(df_final, listadrop)
 
-    df_final = helpers_new_model.last_df_ajust(df_final, listadrop)
+    towrite = io.BytesIO()
+    df_final.to_excel(towrite, index=False)
+    towrite.seek(0)
 
-    df_final.to_excel('teste.xlsx', index = False)
+    return towrite

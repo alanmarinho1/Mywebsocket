@@ -33,7 +33,7 @@
       <h1>Converter Extrato Bradesco</h1>
 
     <div class="submit">
-      <form method='POST' action='.'>
+      <form enctype="multipart/form-data" method='post' action='/'>
         <input type="file" id="files" name="file" />
         <div id="progress_bar"><div class="percent">0%</div></div>
         <br>
@@ -44,14 +44,13 @@
 
     <!-- <script src="main.js" type="module"></script> -->
     <script>
-      window.addEventListener("DOMContentLoaded", () => {
+      // window.addEventListener("DOMContentLoaded", () => {
 
-      // Open the WebSocket connection and register event handlers.
-      const websocket = new WebSocket("ws://localhost:8001/");
-      // receiveFile(websocket)
-      handleFileSelect(websocket);
-      });
-
+      // // Open the WebSocket connection and register event handlers.
+      // const websocket = new WebSocket("ws://localhost:8001/");
+      // // receiveFile(websocket)
+      // handleFileSelect(websocket);
+      // });
 
       var reader;
       var progress = document.querySelector('.percent');

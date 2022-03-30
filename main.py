@@ -1,26 +1,37 @@
+from fileinput import filename
+from http.client import HTTPException
+from io import BytesIO
+import os
 import shutil
 from urllib import request
 from urllib.request import urlopen
 from fastapi import FastAPI, File, UploadFile, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from convert import convert
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="html")
 
-@app.get("/", response_class=HTMLResponse)
-async def main(request: Request):
+@app.get("/")
+async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
-
-@app.post("/files/")
-async def create_file(file: bytes = File(...)):
-    return {"file_size": len(file)}
-
 
 @app.post("/")
 async def upload_file(file: UploadFile = File(...)):
     with open(file.filename, 'wb') as buffer:
         shutil.copyfileobj(file.file, buffer)
-    return {"filename": file.filename}
+    try:
+        file_name = file.filename[:-4]
+        new_excel = convert(file.filename)
+    except:
+        raise HTTPException(status_code=400, detail=f"O arquivo {file.filename} não é PDF")
+    os.remove(file.filename)
+    # new_excel_buffer = BytesIO(new_excel.tobytes())
+
+    headers = {
+        'Content-Disposition': f'attachment; filename={file_name}.xlsx'
+    }
+    return StreamingResponse(new_excel, headers=headers, media_type="application/xlsx")
