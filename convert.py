@@ -10,8 +10,34 @@ from keyword_position import keyword_first_page, keyword_last_page
 from PyPDF2 import PdfFileReader, PdfFileWriter
 import PyPDF2
 import fitz
+import asyncio
+import websockets
+import signal
 
-def convert (filename):
+async def main():
+    async with websockets.serve(convert, "", 8001):
+        await asyncio.Future()  # run forever
+
+async def handler(websocket, x):
+            while True:
+                try:
+                    await websocket.send(x)
+                except websockets.ConnectionClosedOK:
+                    break
+async def server():
+    # Set the stop condition when receiving SIGTERM.
+    loop = asyncio.get_running_loop()
+    stop = loop.create_future()
+    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
+
+    async with websockets.serve(convert, "", 8001):
+        await stop
+
+# filename = "Extrato_Veiculos_2018.pdf"
+
+async def convert (websocket):
+
+    filename = "Extrato_Veiculos_2018.pdf"
 
     xreader = PyPDF2.PdfFileReader(filename)
 
@@ -19,13 +45,20 @@ def convert (filename):
 
     lastrow = False
 
-    for x in range(160, xreader.numPages + 1):
+    for x in range(1, xreader.numPages + 1):
         
         print(f'Lendo {x} de {xreader.numPages}')
         
         listadrop = []
         texto = xreader.pages[x-1].extractText()
         doc = fitz.open(filename)
+
+        while True:
+            try:
+                await websocket.send(str(x))
+                break
+            except websockets.ConnectionClosedOK:
+                break
         
         if(re.search('Folha 1\/', texto)):
             
@@ -86,4 +119,12 @@ def convert (filename):
     df_final.to_excel(towrite, index=False)
     towrite.seek(0)
 
+    asyncio.run(server())
+
     return towrite
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+
+

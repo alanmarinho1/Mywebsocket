@@ -9,6 +9,8 @@ async def handler(websocket):
             message = await websocket.recv()
         except websockets.ConnectionClosedOK:
             break
+        msg = input("Escreva um texto: ")
+        await websocket.send(msg)
         print(message)
 
 
