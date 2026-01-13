@@ -2,6 +2,14 @@
 
 A Python-based web application that converts Bradesco bank statement PDFs into Excel spreadsheets (.xlsx) with real-time progress tracking via WebSocket.
 
+## 📚 Documentation
+
+- **[Quick Start Guide](QUICKSTART.md)** - Get started in 5 minutes
+- **[API Documentation](API.md)** - REST API and WebSocket reference
+- **[Technical Documentation](TECHNICAL.md)** - Architecture and implementation details
+- **[Examples](EXAMPLES.md)** - Code examples and integration patterns
+- **[Contributing](CONTRIBUTING.md)** - How to contribute to the project
+
 ## 🌟 Features
 
 - **PDF to Excel Conversion**: Automatically extracts and processes Bradesco bank statement data from PDF files
