@@ -1,18 +1,18 @@
-# Technical Documentation
+# Documentação Técnica
 
-## Table of Contents
-1. [Architecture Overview](#architecture-overview)
-2. [Data Flow](#data-flow)
-3. [Module Descriptions](#module-descriptions)
-4. [PDF Processing Algorithm](#pdf-processing-algorithm)
-5. [WebSocket Implementation](#websocket-implementation)
-6. [API Reference](#api-reference)
+## Índice
+1. [Visão Geral da Arquitetura](#visão-geral-da-arquitetura)
+2. [Fluxo de Dados](#fluxo-de-dados)
+3. [Descrição dos Módulos](#descrição-dos-módulos)
+4. [Algoritmo de Processamento de PDF](#algoritmo-de-processamento-de-pdf)
+5. [Implementação WebSocket](#implementação-websocket)
+6. [Referência da API](#referência-da-api)
 
 ---
 
-## Architecture Overview
+## Visão Geral da Arquitetura
 
-This application follows a client-server architecture with two main components:
+Esta aplicação segue uma arquitetura cliente-servidor com dois componentes principais:
 
 ```
 ┌─────────────────┐         ┌──────────────────┐
@@ -36,222 +36,222 @@ This application follows a client-server architecture with two main components:
 
 ---
 
-## Data Flow
+## Fluxo de Dados
 
-### 1. File Upload Flow (HTTP)
-
-```
-User → [Select PDF] → [Submit Form] → FastAPI POST / endpoint
-                                            │
-                                            ▼
-                                    Save file temporarily
-                                            │
-                                            ▼
-                                    Call convert() function
-                                            │
-                                            ▼
-                                    Process PDF pages
-                                            │
-                                            ▼
-                                    Generate Excel (BytesIO)
-                                            │
-                                            ▼
-                                    Delete temporary file
-                                            │
-                                            ▼
-                                    Return Excel as download
-```
-
-### 2. WebSocket Progress Flow
+### 1. Fluxo de Upload de Arquivo (HTTP)
 
 ```
-convert.py starts processing → For each page:
+Usuário → [Selecionar PDF] → [Enviar Formulário] → FastAPI POST / endpoint
+                                            │
+                                            ▼
+                                    Salvar arquivo temporariamente
+                                            │
+                                            ▼
+                                    Chamar função convert()
+                                            │
+                                            ▼
+                                    Processar páginas do PDF
+                                            │
+                                            ▼
+                                    Gerar Excel (BytesIO)
+                                            │
+                                            ▼
+                                    Deletar arquivo temporário
+                                            │
+                                            ▼
+                                    Retornar Excel como download
+```
+
+### 2. Fluxo de Progresso via WebSocket
+
+```
+convert.py inicia processamento → Para cada página:
                                     │
                                     ▼
-                            Send page number via WebSocket
+                            Enviar número da página via WebSocket
                                     │
                                     ▼
-                            Browser receives update
+                            Navegador recebe atualização
                                     │
                                     ▼
-                            Update progress bar (if implemented)
+                            Atualizar barra de progresso (se implementada)
 ```
 
 ---
 
-## Module Descriptions
+## Descrição dos Módulos
 
-### main.py - FastAPI Application
+### main.py - Aplicação FastAPI
 
-**Purpose**: HTTP server for file handling
+**Propósito**: Servidor HTTP para manipulação de arquivos
 
-**Key Components**:
-- `app`: FastAPI instance
-- `templates`: Jinja2 template renderer
-- `home()`: GET endpoint serving the upload page
-- `upload_file()`: POST endpoint handling PDF upload and conversion
+**Componentes Principais**:
+- `app`: Instância do FastAPI
+- `templates`: Renderizador de templates Jinja2
+- `home()`: Endpoint GET servindo a página de upload
+- `upload_file()`: Endpoint POST lidando com upload e conversão de PDF
 
-**Dependencies**: FastAPI, Jinja2, convert module
+**Dependências**: FastAPI, Jinja2, módulo convert
 
-**Workflow**:
-1. Receives uploaded PDF file
-2. Saves file to disk temporarily
-3. Calls `convert()` function
-4. Removes temporary file
-5. Returns Excel file as streaming response
+**Fluxo de Trabalho**:
+1. Recebe arquivo PDF enviado
+2. Salva arquivo no disco temporariamente
+3. Chama função `convert()`
+4. Remove arquivo temporário
+5. Retorna arquivo Excel como resposta em streaming
 
 ---
 
-### convert.py - PDF Processing Core
+### convert.py - Núcleo de Processamento de PDF
 
-**Purpose**: Main conversion logic with WebSocket support
+**Propósito**: Lógica principal de conversão com suporte WebSocket
 
-**Key Functions**:
+**Funções Principais**:
 
 #### `convert(websocket)`
-- **Parameters**: WebSocket connection object
-- **Returns**: BytesIO object containing Excel file
-- **Process**:
-  1. Opens PDF file using PyPDF2
-  2. Iterates through each page
-  3. Sends progress updates via WebSocket
-  4. Extracts text and identifies page type
-  5. Determines extraction area based on page content
-  6. Uses tabula to extract table data
-  7. Processes and cleans data using helper functions
-  8. Concatenates all pages into final DataFrame
-  9. Exports to Excel in memory
+- **Parâmetros**: Objeto de conexão WebSocket
+- **Retorna**: Objeto BytesIO contendo arquivo Excel
+- **Processo**:
+  1. Abre arquivo PDF usando PyPDF2
+  2. Itera através de cada página
+  3. Envia atualizações de progresso via WebSocket
+  4. Extrai texto e identifica tipo de página
+  5. Determina área de extração baseada no conteúdo da página
+  6. Usa tabula para extrair dados da tabela
+  7. Processa e limpa dados usando funções auxiliares
+  8. Concatena todas as páginas no DataFrame final
+  9. Exporta para Excel em memória
 
 #### `main()`
-- Starts WebSocket server on port 8001
-- Runs forever waiting for connections
+- Inicia servidor WebSocket na porta 8001
+- Executa indefinidamente aguardando conexões
 
 #### `server()`
-- Alternative server with SIGTERM handling for graceful shutdown
+- Servidor alternativo com manipulação de SIGTERM para desligamento gracioso
 
 ---
 
-### helpers.py - Data Processing Functions
+### helpers.py - Funções de Processamento de Dados
 
-**Purpose**: DataFrame cleaning and formatting
+**Propósito**: Limpeza e formatação de DataFrame
 
 #### `df_ajust_first_page(df, listadrop, empresa, ag, conta)`
 
-Processes the first page of the statement:
-- Renames columns if needed
-- Extracts transaction dates from combined text
-- Handles multi-line transactions
-- Adds company, agency, and account columns
-- Identifies incomplete last row
+Processa a primeira página do extrato:
+- Renomeia colunas se necessário
+- Extrai datas de transação do texto combinado
+- Lida com transações multi-linha
+- Adiciona colunas de empresa, agência e conta
+- Identifica última linha incompleta
 
-**Parameters**:
-- `df`: pandas DataFrame from tabula
-- `listadrop`: List to track rows to delete
-- `empresa`: Company name
-- `ag`: Agency number
-- `conta`: Account number
+**Parâmetros**:
+- `df`: pandas DataFrame do tabula
+- `listadrop`: Lista para rastrear linhas a deletar
+- `empresa`: Nome da empresa
+- `ag`: Número da agência
+- `conta`: Número da conta
 
-**Returns**: Tuple (processed DataFrame, boolean indicating incomplete last row)
+**Retorna**: Tupla (DataFrame processado, booleano indicando última linha incompleta)
 
 #### `df_ajust_pages(df, listadrop, lastrow)`
 
-Processes subsequent pages:
-- Handles different column configurations
-- Standardizes column names
-- Manages page continuation (from incomplete previous page)
-- Consolidates multi-line transactions
-- Removes "SALDO ANTERIOR" (previous balance) rows
+Processa páginas subsequentes:
+- Lida com diferentes configurações de colunas
+- Padroniza nomes de colunas
+- Gerencia continuação de página (de página anterior incompleta)
+- Consolida transações multi-linha
+- Remove linhas de "SALDO ANTERIOR"
 
-**Parameters**:
-- `df`: pandas DataFrame from tabula
-- `listadrop`: List to track rows to delete
-- `lastrow`: Boolean indicating if previous page ended incomplete
+**Parâmetros**:
+- `df`: pandas DataFrame do tabula
+- `listadrop`: Lista para rastrear linhas a deletar
+- `lastrow`: Booleano indicando se página anterior terminou incompleta
 
-**Returns**: Tuple (processed DataFrame, boolean indicating incomplete last row)
+**Retorna**: Tupla (DataFrame processado, booleano indicando última linha incompleta)
 
 #### `last_df_ajust(df, listadrop)`
 
-Final cleanup of complete DataFrame:
-- Consolidates remaining multi-line transactions
-- Propagates date, company, agency, and account information
-- Removes "Total" rows
-- Resets index
+Limpeza final do DataFrame completo:
+- Consolida transações multi-linha restantes
+- Propaga informações de data, empresa, agência e conta
+- Remove linhas de "Total"
+- Redefine índice
 
-**Parameters**:
-- `df`: Complete concatenated DataFrame
-- `listadrop`: List to track rows to delete
+**Parâmetros**:
+- `df`: DataFrame concatenado completo
+- `listadrop`: Lista para rastrear linhas a deletar
 
-**Returns**: Cleaned and formatted DataFrame
+**Retorna**: DataFrame limpo e formatado
 
 ---
 
-### keyword_position.py - Area Detection
+### keyword_position.py - Detecção de Área
 
-**Purpose**: Dynamically calculate PDF extraction areas based on text positions
+**Propósito**: Calcular dinamicamente áreas de extração de PDF baseadas em posições de texto
 
 #### `keyword_first_page(file, x)`
 
-Calculates extraction area for first page:
-- Searches for "Os dados acima" (data disclaimer)
-- Searches for "Data" (date column header)
-- Returns coordinates for tabula area parameter
+Calcula área de extração para primeira página:
+- Busca por "Os dados acima" (aviso de dados)
+- Busca por "Data" (cabeçalho da coluna de data)
+- Retorna coordenadas para parâmetro de área do tabula
 
-**Returns**: Tuple (top, left, bottom, right) in points
+**Retorna**: Tupla (topo, esquerda, baixo, direita) em pontos
 
 #### `keyword_last_page(file, x)`
 
-Calculates extraction area for last page:
-- Searches for "Total" keyword
-- Returns coordinates excluding summary sections
+Calcula área de extração para última página:
+- Busca pela palavra-chave "Total"
+- Retorna coordenadas excluindo seções de resumo
 
-**Returns**: Tuple (top, left, bottom, right) in points
-
----
-
-## PDF Processing Algorithm
-
-### Page Classification
-
-The algorithm classifies each page into one of several types:
-
-1. **First Page** (`Folha 1/`)
-   - Contains account metadata (empresa, agencia, conta)
-   - May have special footer text
-   - Uses dynamic or static area extraction
-
-2. **Empty/Summary Page**
-   - Contains only disclaimers or "no transactions" message
-   - Skipped during processing
-
-3. **Last Page with Total**
-   - Contains "Total" and transaction data
-   - Uses `keyword_last_page()` for area detection
-
-4. **Regular Transaction Page**
-   - Contains only transaction data
-   - Uses static area coordinates
-
-### Multi-line Transaction Handling
-
-Bank statements often split transaction descriptions across multiple rows. The algorithm detects this by:
-
-1. Checking if a row has a balance value but the adjacent rows don't
-2. Concatenating text from adjacent rows into single transaction
-3. Marking adjacent rows for deletion
-4. Maintaining proper data alignment
-
-### Date Propagation
-
-Transaction dates may not repeat for every transaction. The algorithm:
-1. Detects when a date exists
-2. Propagates it forward to subsequent transactions
-3. Stops when a new date is encountered
+**Retorna**: Tupla (topo, esquerda, baixo, direita) em pontos
 
 ---
 
-## WebSocket Implementation
+## Algoritmo de Processamento de PDF
 
-### Server Side (convert.py)
+### Classificação de Páginas
+
+O algoritmo classifica cada página em um dos vários tipos:
+
+1. **Primeira Página** (`Folha 1/`)
+   - Contém metadados da conta (empresa, agencia, conta)
+   - Pode ter texto de rodapé especial
+   - Usa extração de área dinâmica ou estática
+
+2. **Página Vazia/Resumo**
+   - Contém apenas avisos ou mensagem de "sem transações"
+   - Ignorada durante processamento
+
+3. **Última Página com Total**
+   - Contém "Total" e dados de transações
+   - Usa `keyword_last_page()` para detecção de área
+
+4. **Página Regular de Transações**
+   - Contém apenas dados de transações
+   - Usa coordenadas de área estática
+
+### Manipulação de Transações Multi-linha
+
+Extratos bancários frequentemente dividem descrições de transações em múltiplas linhas. O algoritmo detecta isso por:
+
+1. Verificar se uma linha tem um valor de saldo mas as linhas adjacentes não
+2. Concatenar texto das linhas adjacentes em transação única
+3. Marcar linhas adjacentes para deleção
+4. Manter alinhamento adequado dos dados
+
+### Propagação de Datas
+
+Datas de transações podem não se repetir para cada transação. O algoritmo:
+1. Detecta quando uma data existe
+2. Propaga-a para transações subsequentes
+3. Para quando uma nova data é encontrada
+
+---
+
+## Implementação WebSocket
+
+### Lado do Servidor (convert.py)
 
 ```python
 async def convert(websocket):
@@ -266,14 +266,14 @@ async def convert(websocket):
                 break
 ```
 
-The server:
-- Accepts WebSocket connections
-- Sends page numbers as strings
-- Handles connection closures gracefully
+O servidor:
+- Aceita conexões WebSocket
+- Envia números de página como strings
+- Lida com fechamentos de conexão graciosamente
 
-### Client Side (index.html)
+### Lado do Cliente (index.html)
 
-Currently commented out in the HTML, but the structure is:
+Atualmente comentado no HTML, mas a estrutura é:
 
 ```javascript
 const websocket = new WebSocket("ws://localhost:8001/");
@@ -282,19 +282,19 @@ const websocket = new WebSocket("ws://localhost:8001/");
 
 ---
 
-## API Reference
+## Referência da API
 
-### FastAPI Endpoints
+### Endpoints FastAPI
 
 #### GET /
 
-**Description**: Serves the web upload interface
+**Descrição**: Serve a interface web de upload
 
-**Response**:
+**Resposta**:
 - Content-Type: `text/html`
-- Body: Rendered index.html template
+- Body: Template index.html renderizado
 
-**Example**:
+**Exemplo**:
 ```bash
 curl http://localhost:8000/
 ```
@@ -303,23 +303,23 @@ curl http://localhost:8000/
 
 #### POST /
 
-**Description**: Uploads PDF and returns converted Excel file
+**Descrição**: Faz upload de PDF e retorna arquivo Excel convertido
 
-**Request**:
+**Requisição**:
 - Method: POST
 - Content-Type: `multipart/form-data`
-- Body Parameter: `file` (PDF file)
+- Body Parameter: `file` (arquivo PDF)
 
-**Response**:
+**Resposta**:
 - Content-Type: `application/xlsx`
 - Content-Disposition: `attachment; filename={original_name}.xlsx`
-- Body: Excel file binary
+- Body: Binário do arquivo Excel
 
-**Error Response**:
+**Resposta de Erro**:
 - Status: 400
 - Detail: "O arquivo {filename} não é PDF"
 
-**Example**:
+**Exemplo**:
 ```bash
 curl -X POST http://localhost:8000/ \
   -F "file=@statement.pdf" \
@@ -328,94 +328,94 @@ curl -X POST http://localhost:8000/ \
 
 ---
 
-### WebSocket Protocol
+### Protocolo WebSocket
 
-#### Connection
+#### Conexão
 
 **URL**: `ws://localhost:8001/`
 
-**Protocol**: WebSocket
+**Protocolo**: WebSocket
 
-#### Messages
+#### Mensagens
 
-**Direction**: Server → Client
+**Direção**: Servidor → Cliente
 
-**Format**: Plain text string representing page number
+**Formato**: String de texto puro representando número da página
 
-**Example Messages**:
-- `"1"` - Processing page 1
-- `"2"` - Processing page 2
-- `"3"` - Processing page 3
+**Exemplos de Mensagens**:
+- `"1"` - Processando página 1
+- `"2"` - Processando página 2
+- `"3"` - Processando página 3
 
-**Connection Lifecycle**:
-1. Client connects
-2. Server begins processing
-3. Server sends page updates
-4. Processing completes
-5. Connection closes
-
----
-
-## Development Notes
-
-### Adding Support for New Bank Formats
-
-To adapt this for other banks:
-
-1. **Analyze PDF Structure**: 
-   - Use PyMuPDF to examine text layout
-   - Identify table areas and keywords
-
-2. **Update Extraction Areas**:
-   - Modify area coordinates in `convert.py`
-   - Update keyword detection in `keyword_position.py`
-
-3. **Adjust Column Mapping**:
-   - Update column names in `helpers.py`
-   - Modify regex patterns for data extraction
-
-4. **Test Thoroughly**:
-   - Test with multiple statement formats
-   - Validate all data types (dates, amounts, etc.)
-
-### Performance Considerations
-
-- **Memory Usage**: Large PDFs are processed entirely in memory
-- **Processing Time**: Proportional to number of pages (≈1-2 seconds per page)
-- **Concurrent Requests**: FastAPI supports async, but file I/O is synchronous
-- **WebSocket Overhead**: Minimal, only sends page numbers
-
-### Known Limitations
-
-1. **Single Format**: Only supports Bradesco bank statement format
-2. **No Authentication**: No user authentication or file encryption
-3. **Temporary Files**: Uploaded files briefly stored on disk
-4. **Error Handling**: Limited validation of PDF content
-5. **No Persistence**: No database or file storage
+**Ciclo de Vida da Conexão**:
+1. Cliente conecta
+2. Servidor inicia processamento
+3. Servidor envia atualizações de página
+4. Processamento completa
+5. Conexão fecha
 
 ---
 
-## Testing
+## Notas de Desenvolvimento
 
-### Manual Testing Steps
+### Adicionando Suporte para Novos Formatos de Banco
 
-1. **Start the server**:
+Para adaptar isso para outros bancos:
+
+1. **Analisar Estrutura do PDF**: 
+   - Use PyMuPDF para examinar layout do texto
+   - Identifique áreas de tabela e palavras-chave
+
+2. **Atualizar Áreas de Extração**:
+   - Modifique coordenadas de área em `convert.py`
+   - Atualize detecção de palavras-chave em `keyword_position.py`
+
+3. **Ajustar Mapeamento de Colunas**:
+   - Atualize nomes de colunas em `helpers.py`
+   - Modifique padrões regex para extração de dados
+
+4. **Testar Minuciosamente**:
+   - Teste com múltiplos formatos de extrato
+   - Valide todos os tipos de dados (datas, valores, etc.)
+
+### Considerações de Performance
+
+- **Uso de Memória**: PDFs grandes são processados inteiramente em memória
+- **Tempo de Processamento**: Proporcional ao número de páginas (≈1-2 segundos por página)
+- **Requisições Concorrentes**: FastAPI suporta async, mas I/O de arquivo é síncrono
+- **Overhead de WebSocket**: Mínimo, envia apenas números de página
+
+### Limitações Conhecidas
+
+1. **Formato Único**: Suporta apenas formato de extrato do banco Bradesco
+2. **Sem Autenticação**: Sem autenticação de usuário ou criptografia de arquivo
+3. **Arquivos Temporários**: Arquivos enviados brevemente armazenados em disco
+4. **Tratamento de Erros**: Validação limitada do conteúdo do PDF
+5. **Sem Persistência**: Sem banco de dados ou armazenamento de arquivo
+
+---
+
+## Testes
+
+### Passos de Teste Manual
+
+1. **Iniciar o servidor**:
 ```bash
 uvicorn main:app --reload
 ```
 
-2. **Access interface**: http://localhost:8000
+2. **Acessar interface**: http://localhost:8000
 
-3. **Upload test PDF**: Use a sample Bradesco statement
+3. **Fazer upload de PDF de teste**: Use um extrato Bradesco de exemplo
 
-4. **Verify output**: 
-   - Check Excel file downloads
-   - Verify data accuracy
-   - Test with multi-page statements
+4. **Verificar saída**: 
+   - Verificar se arquivo Excel baixa
+   - Verificar precisão dos dados
+   - Testar com extratos multi-página
 
-### Integration Testing
+### Teste de Integração
 
-Test the complete flow:
+Testar o fluxo completo:
 ```python
 import requests
 
@@ -431,9 +431,9 @@ with open('output.xlsx', 'wb') as f:
     f.write(response.content)
 ```
 
-### WebSocket Testing
+### Teste de WebSocket
 
-Test WebSocket separately:
+Testar WebSocket separadamente:
 ```python
 import asyncio
 import websockets
@@ -450,54 +450,54 @@ asyncio.run(test())
 
 ---
 
-## Debugging Tips
+## Dicas de Depuração
 
-### Enable Debug Logging
+### Habilitar Log de Debug
 
-Add logging to convert.py:
+Adicionar logging a convert.py:
 ```python
 import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
 
-### Inspect DataFrame at Each Stage
+### Inspecionar DataFrame em Cada Estágio
 
-Add print statements:
+Adicionar declarações print:
 ```python
 print(df.head())
 print(df.columns)
 print(df.dtypes)
 ```
 
-### Check PDF Extraction
+### Verificar Extração de PDF
 
-Test tabula extraction manually:
+Testar extração tabula manualmente:
 ```python
 import tabula
 df = tabula.read_pdf('test.pdf', pages='1')
 print(df)
 ```
 
-### Monitor WebSocket Traffic
+### Monitorar Tráfego WebSocket
 
-Use browser developer tools:
-1. Open DevTools (F12)
-2. Go to Network tab
-3. Filter by WS (WebSocket)
-4. Watch message exchange
+Usar ferramentas de desenvolvedor do navegador:
+1. Abrir DevTools (F12)
+2. Ir para aba Network
+3. Filtrar por WS (WebSocket)
+4. Observar troca de mensagens
 
 ---
 
-## Future Enhancements
+## Melhorias Futuras
 
-Potential improvements:
-- [ ] Add authentication and user sessions
-- [ ] Support multiple bank formats
-- [ ] Implement client-side progress bar with WebSocket
-- [ ] Add file validation before processing
-- [ ] Store conversion history
-- [ ] Batch processing of multiple files
-- [ ] Docker containerization
-- [ ] Add unit tests and CI/CD
-- [ ] Improve error messages and user feedback
-- [ ] Add API documentation with Swagger UI
+Potenciais melhorias:
+- [ ] Adicionar autenticação e sessões de usuário
+- [ ] Suportar múltiplos formatos de banco
+- [ ] Implementar barra de progresso do lado do cliente com WebSocket
+- [ ] Adicionar validação de arquivo antes do processamento
+- [ ] Armazenar histórico de conversões
+- [ ] Processamento em lote de múltiplos arquivos
+- [ ] Containerização Docker
+- [ ] Adicionar testes unitários e CI/CD
+- [ ] Melhorar mensagens de erro e feedback do usuário
+- [ ] Adicionar documentação da API com Swagger UI
