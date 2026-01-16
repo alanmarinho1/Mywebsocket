@@ -1,29 +1,29 @@
-# Quick Start Guide
+# Guia de Início Rápido
 
-Get up and running with the Bradesco PDF to Excel converter in 5 minutes.
+Comece a usar o conversor de PDF Bradesco para Excel em 5 minutos.
 
-## Prerequisites
+## Pré-requisitos
 
-- Python 3.7 or higher
+- Python 3.7 ou superior
 - Java Runtime Environment (JRE)
-- Git (for cloning)
+- Git (para clonar)
 
-## Installation Steps
+## Passos de Instalação
 
-### 1. Clone the Repository
+### 1. Clonar o Repositório
 
 ```bash
 git clone https://github.com/alanmarinho1/Mywebsocket.git
 cd Mywebsocket
 ```
 
-### 2. Install Python Dependencies
+### 2. Instalar Dependências Python
 
 ```bash
 pip install -r requirements.txt
 ```
 
-If you encounter issues, try using a virtual environment:
+Se encontrar problemas, tente usar um ambiente virtual:
 
 ```bash
 # Create virtual environment
@@ -39,23 +39,23 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Verify Java Installation
+### 3. Verificar Instalação do Java
 
 ```bash
 java -version
 ```
 
-Expected output should show Java version 8 or higher. If Java is not installed:
-- **Windows/Mac**: Download from [java.com](https://www.java.com/)
+A saída esperada deve mostrar a versão 8 do Java ou superior. Se o Java não estiver instalado:
+- **Windows/Mac**: Baixe de [java.com](https://www.java.com/)
 - **Linux**: `sudo apt-get install default-jre` (Ubuntu/Debian)
 
-### 4. Start the Server
+### 4. Iniciar o Servidor
 
 ```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-You should see:
+Você deverá ver:
 ```
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 INFO:     Started reloader process
@@ -64,28 +64,28 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 ```
 
-### 5. Access the Application
+### 5. Acessar a Aplicação
 
-Open your browser and go to:
+Abra seu navegador e vá para:
 ```
 http://localhost:8000
 ```
 
-### 6. Convert Your First PDF
+### 6. Converter Seu Primeiro PDF
 
-1. Click "Escolher arquivo" (Choose file)
-2. Select a Bradesco bank statement PDF
-3. Click "Converter" (Convert)
-4. Wait for processing
-5. The Excel file will automatically download
+1. Clique em "Escolher arquivo"
+2. Selecione um PDF de extrato bancário Bradesco
+3. Clique em "Converter"
+4. Aguarde o processamento
+5. O arquivo Excel será baixado automaticamente
 
-## Common Issues and Solutions
+## Problemas Comuns e Soluções
 
 ### "Java not found"
 
-**Problem**: tabula-py can't find Java
+**Problema**: tabula-py não consegue encontrar o Java
 
-**Solution**:
+**Solução**:
 ```bash
 # Verify Java is in PATH
 echo $JAVA_HOME  # Linux/Mac
@@ -96,9 +96,9 @@ echo %JAVA_HOME%  # Windows
 
 ### "Module not found"
 
-**Problem**: Missing Python package
+**Problema**: Pacote Python ausente
 
-**Solution**:
+**Solução**:
 ```bash
 # Reinstall all dependencies
 pip install -r requirements.txt --force-reinstall
@@ -106,9 +106,9 @@ pip install -r requirements.txt --force-reinstall
 
 ### "Port already in use"
 
-**Problem**: Port 8000 is occupied
+**Problema**: Porta 8000 está ocupada
 
-**Solution**:
+**Solução**:
 ```bash
 # Use a different port
 uvicorn main:app --reload --port 8080
@@ -117,17 +117,17 @@ uvicorn main:app --reload --port 8080
 
 ### "File not processing"
 
-**Problem**: PDF doesn't convert
+**Problema**: PDF não converte
 
-**Solution**:
-- Verify it's a Bradesco bank statement PDF
-- Ensure PDF is not password-protected
-- Check PDF is not corrupted
-- Try with a different PDF file
+**Solução**:
+- Verifique se é um PDF de extrato bancário Bradesco
+- Certifique-se de que o PDF não está protegido por senha
+- Verifique se o PDF não está corrompido
+- Tente com um arquivo PDF diferente
 
-## Using the API
+## Usando a API
 
-### Command Line Upload
+### Upload via Linha de Comando
 
 ```bash
 # Upload and convert a PDF
@@ -136,7 +136,7 @@ curl -X POST http://localhost:8000/ \
   -o output.xlsx
 ```
 
-### Python Script
+### Script Python
 
 ```python
 import requests
@@ -180,15 +180,15 @@ axios.post('http://localhost:8000/', form, {
 });
 ```
 
-## Testing the WebSocket Server
+## Testando o Servidor WebSocket
 
-### Start WebSocket Server
+### Iniciar Servidor WebSocket
 
 ```bash
 python convert.py
 ```
 
-### Test with Python Client
+### Testar com Cliente Python
 
 ```python
 import asyncio
@@ -209,10 +209,10 @@ async def test_websocket():
 asyncio.run(test_websocket())
 ```
 
-### Test with Browser Console
+### Testar com Console do Navegador
 
-1. Open browser console (F12)
-2. Paste and run:
+1. Abra o console do navegador (F12)
+2. Cole e execute:
 
 ```javascript
 const ws = new WebSocket('ws://localhost:8001');
@@ -234,7 +234,7 @@ ws.onclose = () => {
 };
 ```
 
-## Project Structure Overview
+## Visão Geral da Estrutura do Projeto
 
 ```
 Mywebsocket/
@@ -253,26 +253,26 @@ Mywebsocket/
     └── estilo.css         # Styles
 ```
 
-## Next Steps
+## Próximos Passos
 
-- Read [README.md](README.md) for detailed documentation
-- Check [TECHNICAL.md](TECHNICAL.md) for architecture details
-- Review the code to understand the conversion logic
-- Customize for your needs
+- Leia o [README.md](README.md) para documentação detalhada
+- Confira o [TECHNICAL.md](TECHNICAL.md) para detalhes de arquitetura
+- Revise o código para entender a lógica de conversão
+- Personalize para suas necessidades
 
-## Getting Help
+## Obtendo Ajuda
 
-If you encounter issues:
+Se você encontrar problemas:
 
-1. Check the console output for error messages
-2. Review the troubleshooting section above
-3. Verify all dependencies are installed correctly
-4. Ensure you're using a valid Bradesco PDF format
-5. Open an issue on GitHub with error details
+1. Verifique a saída do console para mensagens de erro
+2. Revise a seção de solução de problemas acima
+3. Verifique se todas as dependências estão instaladas corretamente
+4. Certifique-se de estar usando um formato de PDF Bradesco válido
+5. Abra uma issue no GitHub com detalhes do erro
 
-## Production Deployment
+## Implantação em Produção
 
-For production use:
+Para uso em produção:
 
 ```bash
 # Install production server
@@ -282,23 +282,23 @@ pip install gunicorn
 gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 ```
 
-Consider:
-- Setting up a reverse proxy (nginx/Apache)
-- Adding HTTPS/SSL certificates
-- Implementing authentication
-- Adding rate limiting
-- Setting up monitoring and logging
-- Using environment variables for configuration
+Considere:
+- Configurar um proxy reverso (nginx/Apache)
+- Adicionar certificados HTTPS/SSL
+- Implementar autenticação
+- Adicionar limitação de taxa
+- Configurar monitoramento e logging
+- Usar variáveis de ambiente para configuração
 
-## Development Mode
+## Modo de Desenvolvimento
 
-For development with auto-reload:
+Para desenvolvimento com auto-reload:
 
 ```bash
 # Auto-reload on file changes
 uvicorn main:app --reload --log-level debug
 ```
 
-## License and Contributing
+## Licença e Contribuição
 
-See the main [README.md](README.md) for license information and contribution guidelines.
+Veja o [README.md](README.md) principal para informações de licença e diretrizes de contribuição.

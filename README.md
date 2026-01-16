@@ -1,226 +1,226 @@
-# Bradesco Bank Statement PDF to Excel Converter
+# Conversor de Extratos Bancários Bradesco PDF para Excel
 
-A Python-based web application that converts Bradesco bank statement PDFs into Excel spreadsheets (.xlsx) with real-time progress tracking via WebSocket.
+Uma aplicação web baseada em Python que converte extratos bancários Bradesco em PDF para planilhas Excel (.xlsx) com acompanhamento de progresso em tempo real via WebSocket.
 
-## 📚 Documentation
+## 📚 Documentação
 
-- **[Quick Start Guide](QUICKSTART.md)** - Get started in 5 minutes
-- **[API Documentation](API.md)** - REST API and WebSocket reference
-- **[Technical Documentation](TECHNICAL.md)** - Architecture and implementation details
-- **[Examples](EXAMPLES.md)** - Code examples and integration patterns
-- **[Contributing](CONTRIBUTING.md)** - How to contribute to the project
+- **[Guia de Início Rápido](QUICKSTART.md)** - Comece em 5 minutos
+- **[Documentação da API](API.md)** - Referência REST API e WebSocket
+- **[Documentação Técnica](TECHNICAL.md)** - Arquitetura e detalhes de implementação
+- **[Exemplos](EXAMPLES.md)** - Exemplos de código e padrões de integração
+- **[Como Contribuir](CONTRIBUTING.md)** - Como contribuir para o projeto
 
-## 🌟 Features
+## 🌟 Funcionalidades
 
-- **PDF to Excel Conversion**: Automatically extracts and processes Bradesco bank statement data from PDF files
-- **Web Interface**: User-friendly HTML interface for file upload
-- **Real-time Progress**: WebSocket-based progress tracking during conversion
-- **Data Extraction**: Parses transaction details including:
-  - Transaction dates
-  - Descriptions
-  - Document numbers
-  - Credit/Debit amounts
-  - Account balances
-  - Company, agency, and account information
-- **Multi-page Processing**: Handles bank statements with multiple pages
-- **Data Cleaning**: Automatically cleans and formats extracted data
+- **Conversão PDF para Excel**: Extrai e processa automaticamente dados de extratos bancários Bradesco de arquivos PDF
+- **Interface Web**: Interface HTML amigável para upload de arquivos
+- **Progresso em Tempo Real**: Acompanhamento de progresso baseado em WebSocket durante a conversão
+- **Extração de Dados**: Analisa detalhes de transações incluindo:
+  - Datas das transações
+  - Descrições
+  - Números de documento
+  - Valores de crédito/débito
+  - Saldos da conta
+  - Informações de empresa, agência e conta
+- **Processamento Multi-páginas**: Processa extratos bancários com múltiplas páginas
+- **Limpeza de Dados**: Limpa e formata automaticamente os dados extraídos
 
-## 📋 Requirements
+## 📋 Requisitos
 
 - Python 3.7+
 - FastAPI
-- Uvicorn (ASGI server)
+- Uvicorn (servidor ASGI)
 - Pandas
 - Tabula-py
 - PyPDF2
 - PyMuPDF (fitz)
 - Websockets
-- Java Runtime Environment (required by tabula-py)
+- Java Runtime Environment (necessário para tabula-py)
 
-## 🚀 Installation
+## 🚀 Instalação
 
-1. **Clone the repository**
+1. **Clone o repositório**
 ```bash
 git clone https://github.com/alanmarinho1/Mywebsocket.git
 cd Mywebsocket
 ```
 
-2. **Install Python dependencies**
+2. **Instale as dependências Python**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Ensure Java is installed** (required for tabula-py)
+3. **Certifique-se de que o Java está instalado** (necessário para tabula-py)
 ```bash
 java -version
 ```
 
-If Java is not installed, download and install it from [java.com](https://www.java.com/).
+Se o Java não estiver instalado, baixe e instale a partir de [java.com](https://www.java.com/).
 
-## 💻 Usage
+## 💻 Uso
 
-### Running the Web Application
+### Executando a Aplicação Web
 
-1. **Start the FastAPI server**
+1. **Inicie o servidor FastAPI**
 ```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-2. **Access the web interface**
-   - Open your browser and navigate to: `http://localhost:8000`
-   - Upload a Bradesco bank statement PDF
-   - Click "Converter" to start the conversion
-   - Download the generated Excel file
+2. **Acesse a interface web**
+   - Abra seu navegador e navegue para: `http://localhost:8000`
+   - Faça upload de um extrato bancário Bradesco em PDF
+   - Clique em "Converter" para iniciar a conversão
+   - Baixe o arquivo Excel gerado
 
-### Running the WebSocket Server (Standalone)
+### Executando o Servidor WebSocket (Standalone)
 
-For testing the WebSocket functionality separately:
+Para testar a funcionalidade WebSocket separadamente:
 
 ```bash
 python convert.py
 ```
 
-The WebSocket server will start on `ws://localhost:8001`
+O servidor WebSocket iniciará em `ws://localhost:8001`
 
-### Simple WebSocket Example
+### Exemplo Simples de WebSocket
 
 ```bash
 python app.py
 ```
 
-A basic WebSocket echo server for testing purposes.
+Um servidor WebSocket echo básico para fins de teste.
 
-## 🏗️ Architecture
+## 🏗️ Arquitetura
 
-### Components
+### Componentes
 
-1. **main.py** (FastAPI Application)
-   - HTTP server for file upload and download
-   - Serves the web interface
-   - Handles PDF to Excel conversion requests
+1. **main.py** (Aplicação FastAPI)
+   - Servidor HTTP para upload e download de arquivos
+   - Serve a interface web
+   - Gerencia requisições de conversão PDF para Excel
 
-2. **convert.py** (Core Conversion Logic)
-   - WebSocket server for real-time progress updates
-   - PDF parsing and data extraction
-   - Multi-page processing
-   - Excel generation
+2. **convert.py** (Lógica Principal de Conversão)
+   - Servidor WebSocket para atualizações de progresso em tempo real
+   - Análise e extração de dados do PDF
+   - Processamento multi-páginas
+   - Geração de Excel
 
-3. **helpers.py** (Data Processing Functions)
-   - `df_ajust_first_page()`: Processes the first page of the statement
-   - `df_ajust_pages()`: Processes subsequent pages
-   - `last_df_ajust()`: Final data cleanup and formatting
+3. **helpers.py** (Funções de Processamento de Dados)
+   - `df_ajust_first_page()`: Processa a primeira página do extrato
+   - `df_ajust_pages()`: Processa páginas subsequentes
+   - `last_df_ajust()`: Limpeza e formatação final dos dados
 
-4. **keyword_position.py** (PDF Area Detection)
-   - `keyword_first_page()`: Detects data area on first page
-   - `keyword_last_page()`: Detects data area on last page
+4. **keyword_position.py** (Detecção de Área do PDF)
+   - `keyword_first_page()`: Detecta área de dados na primeira página
+   - `keyword_last_page()`: Detecta área de dados na última página
 
-5. **Web Interface** (html/)
-   - `index.html`: Upload form and progress bar
-   - `main.js`: WebSocket client code
-   - `estilo.css`: Styling
+5. **Interface Web** (html/)
+   - `index.html`: Formulário de upload e barra de progresso
+   - `main.js`: Código cliente WebSocket
+   - `estilo.css`: Estilização
 
-## 📡 API Endpoints
+## 📡 Endpoints da API
 
 ### GET /
-Returns the HTML upload interface.
+Retorna a interface HTML de upload.
 
-**Response**: HTML page
+**Resposta**: Página HTML
 
 ### POST /
-Uploads and converts a Bradesco PDF statement to Excel.
+Faz upload e converte um extrato Bradesco em PDF para Excel.
 
-**Request**:
+**Requisição**:
 - Content-Type: `multipart/form-data`
-- Body: PDF file
+- Body: Arquivo PDF
 
-**Response**:
+**Resposta**:
 - Content-Type: `application/xlsx`
-- Body: Excel file download
+- Body: Download do arquivo Excel
 
-## 🔌 WebSocket Protocol
+## 🔌 Protocolo WebSocket
 
-The WebSocket server (port 8001) sends page processing progress:
+O servidor WebSocket (porta 8001) envia o progresso do processamento de páginas:
 
-**Connection**: `ws://localhost:8001/`
+**Conexão**: `ws://localhost:8001/`
 
-**Messages**: 
-- Server sends the current page number being processed (e.g., "1", "2", "3"...)
-- Client can track conversion progress in real-time
+**Mensagens**: 
+- O servidor envia o número da página atual sendo processada (ex: "1", "2", "3"...)
+- O cliente pode acompanhar o progresso da conversão em tempo real
 
-## 📊 Data Structure
+## 📊 Estrutura de Dados
 
-The generated Excel file contains the following columns:
+O arquivo Excel gerado contém as seguintes colunas:
 
-| Column | Description |
-|--------|-------------|
-| Empresa | Company name |
-| Agencia | Bank agency number |
-| Conta | Account number |
-| Data | Transaction date |
-| Lançamento | Transaction description |
-| Dcto. | Document number |
-| Crédito (R$) | Credit amount |
-| Débito (R$) | Debit amount |
-| Saldo (R$) | Account balance |
+| Coluna | Descrição |
+|--------|-----------|
+| Empresa | Nome da empresa |
+| Agencia | Número da agência bancária |
+| Conta | Número da conta |
+| Data | Data da transação |
+| Lançamento | Descrição da transação |
+| Dcto. | Número do documento |
+| Crédito (R$) | Valor do crédito |
+| Débito (R$) | Valor do débito |
+| Saldo (R$) | Saldo da conta |
 
-## 🔧 Configuration
+## 🔧 Configuração
 
-### WebSocket Port
-Default: 8001
+### Porta WebSocket
+Padrão: 8001
 
-To change, modify the port in:
-- `convert.py`: Line 18 and 33
-- `html/index.html`: Line 50 (if uncommented)
+Para alterar, modifique a porta em:
+- `convert.py`: Linhas 18 e 33
+- `html/index.html`: Linha 50 (se descomentado)
 
-### FastAPI Port
-Default: 8000
+### Porta FastAPI
+Padrão: 8000
 
-Set via uvicorn command:
+Configure via comando uvicorn:
 ```bash
-uvicorn main:app --port <your_port>
+uvicorn main:app --port <sua_porta>
 ```
 
-## 🐛 Troubleshooting
+## 🐛 Solução de Problemas
 
-### Java not found
-**Error**: `Java is not installed or not in PATH`
+### Java não encontrado
+**Erro**: `Java is not installed or not in PATH`
 
-**Solution**: Install Java Runtime Environment and ensure it's in your system PATH.
+**Solução**: Instale o Java Runtime Environment e certifique-se de que está no PATH do sistema.
 
-### PDF not processing
-**Error**: File upload but no conversion
+### PDF não está processando
+**Erro**: Upload de arquivo mas sem conversão
 
-**Solution**: 
-- Ensure the PDF is a valid Bradesco bank statement
-- Check that the PDF is not password-protected
-- Verify all dependencies are installed
+**Solução**: 
+- Certifique-se de que o PDF é um extrato bancário Bradesco válido
+- Verifique se o PDF não está protegido por senha
+- Verifique se todas as dependências estão instaladas
 
-### WebSocket connection failed
-**Error**: Cannot connect to WebSocket
+### Falha na conexão WebSocket
+**Erro**: Não é possível conectar ao WebSocket
 
-**Solution**: 
-- Ensure convert.py server is running
-- Check firewall settings for port 8001
-- Verify the WebSocket URL matches your server address
+**Solução**: 
+- Certifique-se de que o servidor convert.py está rodando
+- Verifique as configurações de firewall para a porta 8001
+- Verifique se a URL do WebSocket corresponde ao endereço do seu servidor
 
-## 📝 Notes
+## 📝 Notas
 
-- This application is specifically designed for **Bradesco bank statements** and may not work with other bank formats
-- The PDF structure must match the expected Bradesco format
-- Large PDFs with many pages may take longer to process
+- Esta aplicação é especificamente projetada para **extratos bancários Bradesco** e pode não funcionar com outros formatos de banco
+- A estrutura do PDF deve corresponder ao formato esperado do Bradesco
+- PDFs grandes com muitas páginas podem levar mais tempo para processar
 
-## 🤝 Contributing
+## 🤝 Contribuindo
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contribuições são bem-vindas! Sinta-se à vontade para enviar um Pull Request.
 
-## 📄 License
+## 📄 Licença
 
-This project is available for use as-is. Please check with the repository owner for specific licensing terms.
+Este projeto está disponível para uso no estado em que se encontra. Verifique com o proprietário do repositório os termos específicos de licenciamento.
 
-## 👤 Author
+## 👤 Autor
 
-Alan Marinho - [GitHub Profile](https://github.com/alanmarinho1)
+Alan Marinho - [Perfil no GitHub](https://github.com/alanmarinho1)
 
-## 🔗 Repository
+## 🔗 Repositório
 
 [https://github.com/alanmarinho1/Mywebsocket](https://github.com/alanmarinho1/Mywebsocket)

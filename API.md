@@ -1,69 +1,69 @@
-# API Documentation
+# Documentação da API
 
-This document describes the REST API and WebSocket interface for the Bradesco PDF to Excel converter.
+Este documento descreve a REST API e a interface WebSocket para o conversor de PDF Bradesco para Excel.
 
-## Table of Contents
+## Índice
 
-1. [Base URL](#base-url)
-2. [REST API Endpoints](#rest-api-endpoints)
+1. [URL Base](#url-base)
+2. [Endpoints da REST API](#endpoints-da-rest-api)
 3. [WebSocket API](#websocket-api)
-4. [Error Handling](#error-handling)
-5. [Examples](#examples)
+4. [Tratamento de Erros](#tratamento-de-erros)
+5. [Exemplos](#exemplos)
 
 ---
 
-## Base URL
+## URL Base
 
-### Development
+### Desenvolvimento
 ```
 http://localhost:8000
 ```
 
-### Production
-Replace with your deployed domain:
+### Produção
+Substitua pelo seu domínio implantado:
 ```
 https://your-domain.com
 ```
 
 ---
 
-## REST API Endpoints
+## Endpoints da REST API
 
-### 1. Get Upload Interface
+### 1. Obter Interface de Upload
 
-Serves the HTML upload page.
+Serve a página HTML de upload.
 
 **Endpoint**: `GET /`
 
-**Description**: Returns the web interface for uploading PDF files.
+**Descrição**: Retorna a interface web para fazer upload de arquivos PDF.
 
-**Request**:
+**Requisição**:
 ```http
 GET / HTTP/1.1
 Host: localhost:8000
 ```
 
-**Response**:
+**Resposta**:
 - **Status**: 200 OK
 - **Content-Type**: text/html; charset=utf-8
-- **Body**: HTML page with upload form
+- **Body**: Página HTML com formulário de upload
 
-**Example**:
+**Exemplo**:
 ```bash
 curl http://localhost:8000/
 ```
 
 ---
 
-### 2. Upload and Convert PDF
+### 2. Upload e Conversão de PDF
 
-Converts a Bradesco bank statement PDF to Excel format.
+Converte um extrato bancário Bradesco em PDF para o formato Excel.
 
 **Endpoint**: `POST /`
 
-**Description**: Accepts a PDF file, converts it to Excel, and returns the Excel file.
+**Descrição**: Aceita um arquivo PDF, converte para Excel e retorna o arquivo Excel.
 
-**Request**:
+**Requisição**:
 
 ```http
 POST / HTTP/1.1
@@ -79,19 +79,19 @@ Content-Type: application/pdf
 ------FormBoundary--
 ```
 
-**Parameters**:
+**Parâmetros**:
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| file | File | Yes | Bradesco bank statement PDF file |
+| Parâmetro | Tipo | Obrigatório | Descrição |
+|-----------|------|-------------|-----------|
+| file | File | Sim | Arquivo PDF de extrato bancário Bradesco |
 
-**Response (Success)**:
+**Resposta (Sucesso)**:
 - **Status**: 200 OK
 - **Content-Type**: application/xlsx
 - **Content-Disposition**: attachment; filename={original_name}.xlsx
-- **Body**: Excel file binary data
+- **Body**: Dados binários do arquivo Excel
 
-**Response (Error)**:
+**Resposta (Erro)**:
 - **Status**: 400 Bad Request
 - **Content-Type**: application/json
 - **Body**:
@@ -101,7 +101,7 @@ Content-Type: application/pdf
 }
 ```
 
-**Example (cURL)**:
+**Exemplo (cURL)**:
 ```bash
 curl -X POST http://localhost:8000/ \
   -F "file=@statement.pdf" \
@@ -144,17 +144,17 @@ fetch('http://localhost:8000/', {
 
 ## WebSocket API
 
-### Connection
+### Conexão
 
-Provides real-time progress updates during PDF conversion.
+Fornece atualizações de progresso em tempo real durante a conversão do PDF.
 
 **Endpoint**: `ws://localhost:8001/`
 
 **Protocol**: WebSocket
 
-**Description**: Connects to the WebSocket server to receive page-by-page processing updates.
+**Descrição**: Conecta ao servidor WebSocket para receber atualizações de processamento página por página.
 
-### Connection Flow
+### Fluxo de Conexão
 
 ```
 Client                          Server
@@ -174,20 +174,20 @@ Client                          Server
   |<------- Close ----------------|
 ```
 
-### Messages
+### Mensagens
 
-**Direction**: Server → Client
+**Direção**: Server → Client
 
-**Format**: Plain text string
+**Formato**: String de texto simples
 
-**Content**: Current page number being processed
+**Conteúdo**: Número da página atual sendo processada
 
-**Examples**:
-- `"1"` - Processing page 1
-- `"2"` - Processing page 2
-- `"15"` - Processing page 15
+**Exemplos**:
+- `"1"` - Processando página 1
+- `"2"` - Processando página 2
+- `"15"` - Processando página 15
 
-### Client Implementation
+### Implementação do Cliente
 
 **JavaScript/Browser**:
 ```javascript
@@ -256,18 +256,18 @@ ws.on('error', (error) => {
 
 ---
 
-## Error Handling
+## Tratamento de Erros
 
-### HTTP Error Codes
+### Códigos de Erro HTTP
 
-| Status Code | Description | Common Cause |
-|-------------|-------------|--------------|
-| 200 | Success | File converted successfully |
-| 400 | Bad Request | Invalid PDF or file format |
-| 422 | Unprocessable Entity | Missing file parameter |
-| 500 | Internal Server Error | Server error during processing |
+| Código de Status | Descrição | Causa Comum |
+|------------------|-----------|-------------|
+| 200 | Sucesso | Arquivo convertido com sucesso |
+| 400 | Requisição Inválida | PDF inválido ou formato de arquivo incorreto |
+| 422 | Entidade Não Processável | Parâmetro de arquivo ausente |
+| 500 | Erro Interno do Servidor | Erro no servidor durante o processamento |
 
-### Error Response Format
+### Formato de Resposta de Erro
 
 ```json
 {
@@ -275,16 +275,16 @@ ws.on('error', (error) => {
 }
 ```
 
-### Common Errors
+### Erros Comuns
 
-#### 1. Missing File Parameter
+#### 1. Parâmetro de Arquivo Ausente
 
-**Request**:
+**Requisição**:
 ```bash
 curl -X POST http://localhost:8000/
 ```
 
-**Response**:
+**Resposta**:
 ```json
 {
   "detail": [
@@ -297,45 +297,45 @@ curl -X POST http://localhost:8000/
 }
 ```
 
-#### 2. Invalid PDF File
+#### 2. Arquivo PDF Inválido
 
-**Response**:
+**Resposta**:
 ```json
 {
   "detail": "O arquivo invalid_file.txt não é PDF"
 }
 ```
 
-#### 3. Processing Error
+#### 3. Erro de Processamento
 
-**Response**:
+**Resposta**:
 ```json
 {
   "detail": "Error processing PDF: [specific error message]"
 }
 ```
 
-### WebSocket Errors
+### Erros do WebSocket
 
-**Connection Refused**:
+**Conexão Recusada**:
 ```
 Error: WebSocket connection failed: Connection refused
 ```
-- **Cause**: WebSocket server not running
-- **Solution**: Start `convert.py` server
+- **Causa**: Servidor WebSocket não está em execução
+- **Solução**: Iniciar o servidor `convert.py`
 
-**Connection Closed**:
+**Conexão Fechada**:
 ```
 ConnectionClosedOK
 ```
-- **Cause**: Normal closure after processing
-- **Action**: No action needed, expected behavior
+- **Causa**: Fechamento normal após o processamento
+- **Ação**: Nenhuma ação necessária, comportamento esperado
 
 ---
 
-## Examples
+## Exemplos
 
-### Complete Workflow Example (Python)
+### Exemplo de Fluxo de Trabalho Completo (Python)
 
 ```python
 import requests
@@ -395,7 +395,7 @@ if __name__ == "__main__":
         print("✓ Conversion successful!")
 ```
 
-### Batch Processing Example
+### Exemplo de Processamento em Lote
 
 ```python
 import requests
@@ -436,7 +436,7 @@ def batch_convert(input_dir, output_dir):
 batch_convert("./pdfs", "./excel_outputs")
 ```
 
-### Web Application Integration (JavaScript)
+### Integração com Aplicação Web (JavaScript)
 
 ```javascript
 // Complete upload with progress tracking
@@ -533,43 +533,43 @@ fileInput.addEventListener('change', async (e) => {
 
 ---
 
-## Rate Limiting
+## Limitação de Taxa
 
-Currently, there is no rate limiting implemented. For production use, consider:
+Atualmente, não há limitação de taxa implementada. Para uso em produção, considere:
 
-- Implementing rate limiting middleware
-- Adding authentication tokens
-- Setting maximum file size limits
-- Queue system for concurrent requests
-
----
-
-## Security Considerations
-
-### Current Implementation
-
-- No authentication required
-- No input validation beyond file type
-- Temporary files stored on server disk
-- No encryption of uploaded files
-
-### Recommendations for Production
-
-1. **Add Authentication**: Implement API keys or OAuth
-2. **Validate Input**: Check file size and content
-3. **Secure Storage**: Encrypt temporary files
-4. **HTTPS**: Use SSL/TLS certificates
-5. **Rate Limiting**: Prevent abuse
-6. **Logging**: Track all API calls
-7. **CORS**: Configure appropriate CORS headers
+- Implementar middleware de limitação de taxa
+- Adicionar tokens de autenticação
+- Definir limites de tamanho máximo de arquivo
+- Sistema de fila para requisições simultâneas
 
 ---
 
-## Versioning
+## Considerações de Segurança
 
-Current version: 1.0 (implicit)
+### Implementação Atual
 
-Future versions should include version in URL:
+- Nenhuma autenticação necessária
+- Nenhuma validação de entrada além do tipo de arquivo
+- Arquivos temporários armazenados no disco do servidor
+- Nenhuma criptografia de arquivos enviados
+
+### Recomendações para Produção
+
+1. **Adicionar Autenticação**: Implementar chaves API ou OAuth
+2. **Validar Entrada**: Verificar tamanho e conteúdo do arquivo
+3. **Armazenamento Seguro**: Criptografar arquivos temporários
+4. **HTTPS**: Usar certificados SSL/TLS
+5. **Limitação de Taxa**: Prevenir abuso
+6. **Registro de Logs**: Rastrear todas as chamadas da API
+7. **CORS**: Configurar cabeçalhos CORS apropriados
+
+---
+
+## Versionamento
+
+Versão atual: 1.0 (implícita)
+
+Versões futuras devem incluir a versão na URL:
 ```
 /api/v1/convert
 /api/v2/convert
@@ -577,9 +577,9 @@ Future versions should include version in URL:
 
 ---
 
-## Support
+## Suporte
 
-For API questions or issues:
-- Check [README.md](README.md) for general documentation
-- See [TECHNICAL.md](TECHNICAL.md) for implementation details
-- Open an issue on GitHub with API-specific questions
+Para questões ou problemas com a API:
+- Consulte [README.md](README.md) para documentação geral
+- Veja [TECHNICAL.md](TECHNICAL.md) para detalhes de implementação
+- Abra uma issue no GitHub com questões específicas sobre a API
