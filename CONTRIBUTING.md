@@ -1,87 +1,87 @@
-# Contributing to Bradesco PDF to Excel Converter
+# Contribuindo para o Bradesco PDF to Excel Converter
 
-Thank you for considering contributing to this project! This document provides guidelines for contributing.
+Obrigado por considerar contribuir com este projeto! Este documento fornece diretrizes para contribuição.
 
-## Table of Contents
+## Índice
 
-1. [Code of Conduct](#code-of-conduct)
-2. [How Can I Contribute?](#how-can-i-contribute)
-3. [Development Setup](#development-setup)
-4. [Coding Standards](#coding-standards)
-5. [Submitting Changes](#submitting-changes)
-6. [Reporting Bugs](#reporting-bugs)
-7. [Suggesting Enhancements](#suggesting-enhancements)
-
----
-
-## Code of Conduct
-
-This project aims to be welcoming and inclusive. Please be respectful and considerate when interacting with others.
-
-### Our Standards
-
-- Using welcoming and inclusive language
-- Being respectful of differing viewpoints and experiences
-- Gracefully accepting constructive criticism
-- Focusing on what is best for the community
-- Showing empathy towards other community members
+1. [Código de Conduta](#código-de-conduta)
+2. [Como Posso Contribuir?](#como-posso-contribuir)
+3. [Configuração do Ambiente de Desenvolvimento](#configuração-do-ambiente-de-desenvolvimento)
+4. [Padrões de Código](#padrões-de-código)
+5. [Enviando Alterações](#enviando-alterações)
+6. [Reportando Bugs](#reportando-bugs)
+7. [Sugerindo Melhorias](#sugerindo-melhorias)
 
 ---
 
-## How Can I Contribute?
+## Código de Conduta
 
-### Reporting Bugs
+Este projeto tem como objetivo ser acolhedor e inclusivo. Por favor, seja respeitoso e atencioso ao interagir com outras pessoas.
 
-If you find a bug, please create an issue with:
+### Nossos Padrões
 
-1. **Clear title**: Describe the issue briefly
-2. **Description**: Detailed explanation of the bug
-3. **Steps to reproduce**: How to reproduce the issue
-4. **Expected behavior**: What should happen
-5. **Actual behavior**: What actually happens
-6. **Environment**: OS, Python version, etc.
-7. **Screenshots**: If applicable
+- Usar linguagem acolhedora e inclusiva
+- Ser respeitoso com diferentes pontos de vista e experiências
+- Aceitar críticas construtivas com elegância
+- Focar no que é melhor para a comunidade
+- Demonstrar empatia com outros membros da comunidade
 
-**Example**:
+---
+
+## Como Posso Contribuir?
+
+### Reportando Bugs
+
+Se você encontrar um bug, por favor crie uma issue com:
+
+1. **Título claro**: Descreva o problema brevemente
+2. **Descrição**: Explicação detalhada do bug
+3. **Passos para reproduzir**: Como reproduzir o problema
+4. **Comportamento esperado**: O que deveria acontecer
+5. **Comportamento atual**: O que realmente acontece
+6. **Ambiente**: SO, versão do Python, etc.
+7. **Capturas de tela**: Se aplicável
+
+**Exemplo**:
 ```
-Title: PDF with special characters fails to convert
+Título: PDF com caracteres especiais falha ao converter
 
-Description:
-When uploading a PDF that contains special characters (ç, ã, õ),
-the conversion fails with an encoding error.
+Descrição:
+Ao fazer upload de um PDF que contém caracteres especiais (ç, ã, õ),
+a conversão falha com um erro de codificação.
 
-Steps to Reproduce:
-1. Start the server
-2. Upload PDF with special characters
-3. Click convert
+Passos para Reproduzir:
+1. Iniciar o servidor
+2. Fazer upload de PDF com caracteres especiais
+3. Clicar em converter
 
-Expected: PDF converts successfully
-Actual: Error 500 with encoding exception
+Esperado: PDF converte com sucesso
+Atual: Erro 500 com exceção de codificação
 
-Environment:
-- OS: Ubuntu 22.04
+Ambiente:
+- SO: Ubuntu 22.04
 - Python: 3.10.5
-- Browser: Chrome 120
+- Navegador: Chrome 120
 ```
 
-### Suggesting Enhancements
+### Sugerindo Melhorias
 
-Enhancement suggestions are welcome! Please create an issue with:
+Sugestões de melhorias são bem-vindas! Por favor, crie uma issue com:
 
-1. **Use case**: Why is this enhancement needed?
-2. **Proposed solution**: How should it work?
-3. **Alternatives**: Any alternative approaches?
-4. **Additional context**: Screenshots, mockups, etc.
+1. **Caso de uso**: Por que esta melhoria é necessária?
+2. **Solução proposta**: Como deveria funcionar?
+3. **Alternativas**: Alguma abordagem alternativa?
+4. **Contexto adicional**: Capturas de tela, mockups, etc.
 
 ### Pull Requests
 
-Pull requests are always welcome! See [Submitting Changes](#submitting-changes) below.
+Pull requests são sempre bem-vindos! Veja [Enviando Alterações](#enviando-alterações) abaixo.
 
 ---
 
-## Development Setup
+## Configuração do Ambiente de Desenvolvimento
 
-### 1. Fork and Clone
+### 1. Fork e Clone
 
 ```bash
 # Fork the repository on GitHub, then:
@@ -89,7 +89,7 @@ git clone https://github.com/YOUR-USERNAME/Mywebsocket.git
 cd Mywebsocket
 ```
 
-### 2. Create Virtual Environment
+### 2. Criar Ambiente Virtual
 
 ```bash
 python -m venv venv
@@ -101,7 +101,7 @@ source venv/bin/activate
 venv\Scripts\activate
 ```
 
-### 3. Install Dependencies
+### 3. Instalar Dependências
 
 ```bash
 pip install -r requirements.txt
@@ -110,7 +110,7 @@ pip install -r requirements.txt
 pip install pytest black flake8 mypy
 ```
 
-### 4. Create a Branch
+### 4. Criar um Branch
 
 ```bash
 git checkout -b feature/your-feature-name
@@ -118,11 +118,11 @@ git checkout -b feature/your-feature-name
 git checkout -b fix/your-bug-fix
 ```
 
-### 5. Make Your Changes
+### 5. Fazer Suas Alterações
 
-Edit the code, add tests, update documentation.
+Edite o código, adicione testes, atualize a documentação.
 
-### 6. Test Your Changes
+### 6. Testar Suas Alterações
 
 ```bash
 # Run the server
@@ -134,18 +134,18 @@ python -m pytest  # If tests exist
 
 ---
 
-## Coding Standards
+## Padrões de Código
 
-### Python Style
+### Estilo Python
 
-- Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide
-- Use 4 spaces for indentation (no tabs)
-- Maximum line length: 88 characters (Black default)
-- Use descriptive variable names
+- Siga o guia de estilo [PEP 8](https://www.python.org/dev/peps/pep-0008/)
+- Use 4 espaços para indentação (sem tabs)
+- Comprimento máximo de linha: 88 caracteres (padrão do Black)
+- Use nomes de variáveis descritivos
 
-### Code Formatting
+### Formatação de Código
 
-Use Black for formatting:
+Use Black para formatação:
 
 ```bash
 pip install black
@@ -154,7 +154,7 @@ black .
 
 ### Linting
 
-Use flake8 for linting:
+Use flake8 para linting:
 
 ```bash
 pip install flake8
@@ -163,7 +163,7 @@ flake8 . --max-line-length=88 --extend-ignore=E203
 
 ### Type Hints
 
-Add type hints where possible:
+Adicione type hints sempre que possível:
 
 ```python
 def convert_pdf(filename: str) -> bytes:
@@ -171,14 +171,14 @@ def convert_pdf(filename: str) -> bytes:
     pass
 ```
 
-### Documentation
+### Documentação
 
-- Add docstrings to functions and classes
-- Update README.md if adding features
-- Add examples to EXAMPLES.md if applicable
-- Update TECHNICAL.md for architecture changes
+- Adicione docstrings às funções e classes
+- Atualize o README.md ao adicionar recursos
+- Adicione exemplos ao EXAMPLES.md se aplicável
+- Atualize o TECHNICAL.md para mudanças de arquitetura
 
-**Example Docstring**:
+**Exemplo de Docstring**:
 ```python
 def process_page(df: pd.DataFrame, page_num: int) -> pd.DataFrame:
     """
@@ -197,28 +197,28 @@ def process_page(df: pd.DataFrame, page_num: int) -> pd.DataFrame:
     pass
 ```
 
-### Comments
+### Comentários
 
-- Write comments for complex logic
-- Avoid obvious comments
-- Use Portuguese for domain-specific terms when appropriate
-- Use English for technical terms
+- Escreva comentários para lógica complexa
+- Evite comentários óbvios
+- Use português para termos específicos do domínio quando apropriado
+- Use inglês para termos técnicos
 
 ---
 
-## Submitting Changes
+## Enviando Alterações
 
-### Before Submitting
+### Antes de Enviar
 
-1. **Test your changes**: Ensure everything works
-2. **Update documentation**: If you changed functionality
-3. **Add examples**: If you added new features
-4. **Format code**: Run Black and flake8
-5. **Commit message**: Write clear commit messages
+1. **Teste suas alterações**: Garanta que tudo funciona
+2. **Atualize a documentação**: Se você alterou funcionalidades
+3. **Adicione exemplos**: Se você adicionou novos recursos
+4. **Formate o código**: Execute Black e flake8
+5. **Mensagem de commit**: Escreva mensagens de commit claras
 
-### Commit Messages
+### Mensagens de Commit
 
-Follow conventional commits format:
+Siga o formato de commits convencionais:
 
 ```
 type(scope): brief description
@@ -228,195 +228,195 @@ Longer description if needed
 Fixes #123
 ```
 
-**Types**:
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `style`: Code style changes (formatting)
-- `refactor`: Code refactoring
-- `test`: Adding or updating tests
-- `chore`: Maintenance tasks
+**Tipos**:
+- `feat`: Nova funcionalidade
+- `fix`: Correção de bug
+- `docs`: Alterações na documentação
+- `style`: Alterações de estilo de código (formatação)
+- `refactor`: Refatoração de código
+- `test`: Adição ou atualização de testes
+- `chore`: Tarefas de manutenção
 
-**Examples**:
+**Exemplos**:
 ```
-feat(converter): add support for multi-column statements
+feat(converter): adiciona suporte para extratos multi-coluna
 
-fix(helpers): handle empty rows correctly
+fix(helpers): trata linhas vazias corretamente
 
-docs(readme): update installation instructions
+docs(readme): atualiza instruções de instalação
 
-refactor(convert): simplify page detection logic
+refactor(convert): simplifica lógica de detecção de página
 ```
 
-### Pull Request Process
+### Processo de Pull Request
 
-1. **Push to your fork**:
+1. **Envie para seu fork**:
 ```bash
 git push origin feature/your-feature-name
 ```
 
-2. **Create Pull Request on GitHub**:
-   - Go to the original repository
-   - Click "New Pull Request"
-   - Select your fork and branch
-   - Fill in the template
+2. **Crie um Pull Request no GitHub**:
+   - Vá para o repositório original
+   - Clique em "New Pull Request"
+   - Selecione seu fork e branch
+   - Preencha o template
 
-3. **PR Description** should include:
-   - What changes were made
-   - Why the changes were necessary
-   - How to test the changes
-   - Related issues (if any)
+3. **Descrição do PR** deve incluir:
+   - Quais alterações foram feitas
+   - Por que as alterações eram necessárias
+   - Como testar as alterações
+   - Issues relacionadas (se houver)
 
-**Example PR Description**:
+**Exemplo de Descrição de PR**:
 ```markdown
-## Description
-Added support for bank statements with multiple accounts on the same PDF.
+## Descrição
+Adicionado suporte para extratos bancários com múltiplas contas no mesmo PDF.
 
-## Changes
-- Modified `convert.py` to detect account changes
-- Updated `helpers.py` to handle multi-account data
-- Added new function `split_by_account()`
+## Alterações
+- Modificado `convert.py` para detectar mudanças de conta
+- Atualizado `helpers.py` para lidar com dados de múltiplas contas
+- Adicionada nova função `split_by_account()`
 
-## Testing
-1. Upload the test file `multi_account_statement.pdf`
-2. Verify output has separate sheets for each account
-3. Check data integrity for each account
+## Testes
+1. Fazer upload do arquivo de teste `multi_account_statement.pdf`
+2. Verificar se a saída tem planilhas separadas para cada conta
+3. Verificar a integridade dos dados para cada conta
 
-## Related Issues
+## Issues Relacionadas
 Fixes #42
 ```
 
-4. **Wait for Review**:
-   - Address any feedback
-   - Make requested changes
-   - Update the PR
+4. **Aguarde Revisão**:
+   - Responda a qualquer feedback
+   - Faça as alterações solicitadas
+   - Atualize o PR
 
 5. **Merge**:
-   - Once approved, maintainer will merge
-   - Delete your branch after merge
+   - Uma vez aprovado, o mantenedor fará o merge
+   - Delete seu branch após o merge
 
 ---
 
-## Reporting Bugs
+## Reportando Bugs
 
-### Security Issues
+### Problemas de Segurança
 
-**Do not** open public issues for security vulnerabilities. Instead:
-- Email the maintainer directly
-- Provide detailed information
-- Wait for response before disclosing
+**Não** abra issues públicas para vulnerabilidades de segurança. Em vez disso:
+- Envie um email diretamente ao mantenedor
+- Forneça informações detalhadas
+- Aguarde resposta antes de divulgar
 
-### Bug Reports
+### Relatórios de Bug
 
-Use the issue template:
+Use o template de issue:
 
 ```markdown
-**Describe the bug**
-A clear description of what the bug is.
+**Descreva o bug**
+Uma descrição clara do que é o bug.
 
-**To Reproduce**
-Steps to reproduce:
-1. Go to '...'
-2. Click on '...'
-3. See error
+**Para Reproduzir**
+Passos para reproduzir:
+1. Vá para '...'
+2. Clique em '...'
+3. Veja o erro
 
-**Expected behavior**
-What you expected to happen.
+**Comportamento esperado**
+O que você esperava que acontecesse.
 
-**Screenshots**
-If applicable, add screenshots.
+**Capturas de tela**
+Se aplicável, adicione capturas de tela.
 
-**Environment:**
- - OS: [e.g. Ubuntu 22.04]
- - Python Version: [e.g. 3.10.5]
- - Browser: [e.g. Chrome 120]
+**Ambiente:**
+ - SO: [ex: Ubuntu 22.04]
+ - Versão do Python: [ex: 3.10.5]
+ - Navegador: [ex: Chrome 120]
 
-**Additional context**
-Any other context about the problem.
+**Contexto adicional**
+Qualquer outro contexto sobre o problema.
 ```
 
 ---
 
-## Suggesting Enhancements
+## Sugerindo Melhorias
 
-### Feature Requests
+### Solicitações de Recursos
 
-Use this template:
+Use este template:
 
 ```markdown
-**Is your feature request related to a problem?**
-A clear description of the problem.
+**Sua solicitação de recurso está relacionada a um problema?**
+Uma descrição clara do problema.
 
-**Describe the solution you'd like**
-A clear description of what you want to happen.
+**Descreva a solução que você gostaria**
+Uma descrição clara do que você quer que aconteça.
 
-**Describe alternatives you've considered**
-Alternative solutions or features you've considered.
+**Descreva alternativas que você considerou**
+Soluções ou recursos alternativos que você considerou.
 
-**Additional context**
-Screenshots, mockups, examples, etc.
+**Contexto adicional**
+Capturas de tela, mockups, exemplos, etc.
 ```
 
-### Enhancement Ideas
+### Ideias de Melhorias
 
-Some areas where contributions would be valuable:
+Algumas áreas onde contribuições seriam valiosas:
 
-1. **Multi-Bank Support**: Add support for other Brazilian banks
-2. **Improved Error Handling**: Better error messages and recovery
-3. **Progress Bar**: Implement client-side progress tracking
-4. **Authentication**: Add user authentication
-5. **Database**: Store conversion history
-6. **Tests**: Add comprehensive test suite
-7. **Docker**: Create Docker image
-8. **API Documentation**: Add Swagger/OpenAPI docs
-9. **Internationalization**: Add English translations
-10. **Performance**: Optimize for large PDFs
-
----
-
-## Development Guidelines
-
-### Adding New Features
-
-1. **Discuss first**: Create an issue to discuss the feature
-2. **Keep it focused**: One feature per PR
-3. **Maintain compatibility**: Don't break existing functionality
-4. **Add tests**: If adding test infrastructure
-5. **Document**: Update all relevant documentation
-
-### Fixing Bugs
-
-1. **Reproduce first**: Ensure you can reproduce the bug
-2. **Minimal fix**: Make the smallest change that fixes it
-3. **Add test**: Prevent regression
-4. **Document**: Update docs if behavior changed
-
-### Improving Documentation
-
-1. **Clarity**: Make it easy to understand
-2. **Examples**: Add practical examples
-3. **Completeness**: Cover all aspects
-4. **Accuracy**: Ensure information is correct
-5. **Formatting**: Follow markdown best practices
+1. **Suporte Multi-Banco**: Adicionar suporte para outros bancos brasileiros
+2. **Tratamento de Erros Melhorado**: Mensagens de erro melhores e recuperação
+3. **Barra de Progresso**: Implementar rastreamento de progresso no cliente
+4. **Autenticação**: Adicionar autenticação de usuário
+5. **Banco de Dados**: Armazenar histórico de conversões
+6. **Testes**: Adicionar conjunto abrangente de testes
+7. **Docker**: Criar imagem Docker
+8. **Documentação da API**: Adicionar documentação Swagger/OpenAPI
+9. **Internacionalização**: Adicionar traduções em inglês
+10. **Performance**: Otimizar para PDFs grandes
 
 ---
 
-## Questions?
+## Diretrizes de Desenvolvimento
 
-If you have questions about contributing:
+### Adicionando Novos Recursos
 
-1. Check existing documentation
-2. Search existing issues
-3. Create a new issue with the "question" label
-4. Be specific and provide context
+1. **Discuta primeiro**: Crie uma issue para discutir o recurso
+2. **Mantenha o foco**: Um recurso por PR
+3. **Mantenha compatibilidade**: Não quebre funcionalidades existentes
+4. **Adicione testes**: Se adicionar infraestrutura de testes
+5. **Documente**: Atualize toda a documentação relevante
+
+### Corrigindo Bugs
+
+1. **Reproduza primeiro**: Garanta que você consegue reproduzir o bug
+2. **Correção mínima**: Faça a menor alteração que o corrija
+3. **Adicione teste**: Previna regressão
+4. **Documente**: Atualize a documentação se o comportamento mudou
+
+### Melhorando a Documentação
+
+1. **Clareza**: Torne fácil de entender
+2. **Exemplos**: Adicione exemplos práticos
+3. **Completude**: Cubra todos os aspectos
+4. **Precisão**: Garanta que a informação está correta
+5. **Formatação**: Siga as melhores práticas de markdown
 
 ---
 
-## Recognition
+## Dúvidas?
 
-Contributors will be recognized in:
-- GitHub contributors page
-- Release notes (for significant contributions)
-- Special mentions for major features
+Se você tiver dúvidas sobre como contribuir:
 
-Thank you for contributing! 🎉
+1. Verifique a documentação existente
+2. Pesquise issues existentes
+3. Crie uma nova issue com a label "question"
+4. Seja específico e forneça contexto
+
+---
+
+## Reconhecimento
+
+Contribuidores serão reconhecidos em:
+- Página de contribuidores do GitHub
+- Notas de lançamento (para contribuições significativas)
+- Menções especiais para recursos importantes
+
+Obrigado por contribuir! 🎉
