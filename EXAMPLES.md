@@ -1,21 +1,21 @@
-# Examples
+# Exemplos
 
-This document provides practical examples of using the Bradesco PDF to Excel converter in various scenarios.
+Este documento fornece exemplos práticos de uso do conversor de PDF para Excel do Bradesco em vários cenários.
 
-## Table of Contents
+## Índice
 
-1. [Basic Usage Examples](#basic-usage-examples)
-2. [Integration Examples](#integration-examples)
-3. [Advanced Scenarios](#advanced-scenarios)
-4. [Testing Examples](#testing-examples)
+1. [Exemplos de Uso Básico](#exemplos-de-uso-básico)
+2. [Exemplos de Integração](#exemplos-de-integração)
+3. [Cenários Avançados](#cenários-avançados)
+4. [Exemplos de Testes](#exemplos-de-testes)
 
 ---
 
-## Basic Usage Examples
+## Exemplos de Uso Básico
 
-### Example 1: Simple Command Line Upload
+### Exemplo 1: Upload Simples via Linha de Comando
 
-The simplest way to convert a PDF:
+A maneira mais simples de converter um PDF:
 
 ```bash
 curl -X POST http://localhost:8000/ \
@@ -23,7 +23,7 @@ curl -X POST http://localhost:8000/ \
   -o converted.xlsx
 ```
 
-### Example 2: Python Script
+### Exemplo 2: Script Python
 
 ```python
 #!/usr/bin/env python3
@@ -67,7 +67,7 @@ Usage:
 python convert_script.py statement.pdf result.xlsx
 ```
 
-### Example 3: Node.js Script
+### Exemplo 3: Script Node.js
 
 ```javascript
 const fs = require('fs');
@@ -108,11 +108,11 @@ convertPDF(inputFile, outputFile);
 
 ---
 
-## Integration Examples
+## Exemplos de Integração
 
-### Example 4: Flask Web Application
+### Exemplo 4: Aplicação Web Flask
 
-Integrate the converter into a Flask app:
+Integre o conversor em uma aplicação Flask:
 
 ```python
 from flask import Flask, render_template, request, send_file
@@ -156,7 +156,7 @@ if __name__ == '__main__':
     app.run(port=5000)
 ```
 
-### Example 5: Django Integration
+### Exemplo 5: Integração com Django
 
 ```python
 # views.py
@@ -187,7 +187,7 @@ def convert_pdf(request):
     return render(request, 'upload.html')
 ```
 
-### Example 6: React Frontend
+### Exemplo 6: Frontend React
 
 ```javascript
 import React, { useState } from 'react';
@@ -284,9 +284,9 @@ export default PDFConverter;
 
 ---
 
-## Advanced Scenarios
+## Cenários Avançados
 
-### Example 7: Batch Processing with Progress Tracking
+### Exemplo 7: Processamento em Lote com Rastreamento de Progresso
 
 ```python
 import requests
@@ -390,7 +390,7 @@ if __name__ == "__main__":
     converter.batch_convert("./input_pdfs", "./output_excel")
 ```
 
-### Example 8: Error Handling and Retry Logic
+### Exemplo 8: Tratamento de Erros e Lógica de Retentativa
 
 ```python
 import requests
@@ -472,7 +472,7 @@ except Exception as e:
     print(f"Failed after all retries: {e}")
 ```
 
-### Example 9: Scheduled Batch Processing
+### Exemplo 9: Processamento em Lote Agendado
 
 ```python
 import schedule
@@ -559,9 +559,9 @@ if __name__ == "__main__":
 
 ---
 
-## Testing Examples
+## Exemplos de Testes
 
-### Example 10: Unit Test for Converter Client
+### Exemplo 10: Teste Unitário para Cliente do Conversor
 
 ```python
 import unittest
@@ -607,7 +607,7 @@ if __name__ == '__main__':
     unittest.main()
 ```
 
-### Example 11: Integration Test
+### Exemplo 11: Teste de Integração
 
 ```python
 import pytest
@@ -661,10 +661,10 @@ def sample_text_file(tmp_path):
 
 ---
 
-## More Examples
+## Mais Exemplos
 
-Check the individual documentation files for more examples:
-- [README.md](README.md) - Basic usage
-- [QUICKSTART.md](QUICKSTART.md) - Quick start examples
-- [API.md](API.md) - API usage examples
-- [TECHNICAL.md](TECHNICAL.md) - Technical implementation examples
+Consulte os arquivos de documentação individuais para mais exemplos:
+- [README.md](README.md) - Uso básico
+- [QUICKSTART.md](QUICKSTART.md) - Exemplos de início rápido
+- [API.md](API.md) - Exemplos de uso da API
+- [TECHNICAL.md](TECHNICAL.md) - Exemplos de implementação técnica
